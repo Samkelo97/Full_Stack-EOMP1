@@ -110,6 +110,7 @@ class Users {
     });
   }
   
+  
   updateUser(req, res) {
     const data = req.body;
     if (data.userPass) {
