@@ -67,36 +67,49 @@ class Users {
       WHERE emailAdd = ?;
     `;
     db.query(query, [emailAdd], async (err, result) => {
-      if (err) throw err;
+      if (err) {
+        console.error("Database error during login:", err);
+        res.status(500).json({ error: "Internal server error" });
+        return;
+      }
+  
       if (!result?.length) {
-        res.json({
-          status: res.statusCode,
-          msg: "You provided a wrong email.",
+        console.log("User not found with email:", emailAdd);
+        res.status(401).json({
+          msg: "Invalid email address or password.",
         });
-      } else {
-        await compare(userPass, result[0].userPass, (cErr, cResult) => {
-          if (cErr) throw cErr;
-          // Create a token
+        return;
+      }
+  
+      const user = result[0];
+  
+      await compare(userPass, user.userPass, (cErr, cResult) => {
+        if (cErr) {
+          console.error("Error comparing passwords:", cErr);
+          res.status(500).json({ error: "Internal server error" });
+          return;
+        }
+  
+        if (cResult) {
           const token = createToken({
             emailAdd,
             userPass,
           });
-          if (cResult) {
-            res.json({
-              msg: "Logged in",
-              token,
-              result: result[0],
-            });
-          } else {
-            res.json({
-              status: res.statusCode,
-              msg: "Invalid password or you have not registered",
-            });
-          }
-        });
-      }
+          res.status(200).json({
+            msg: "Logged in",
+            token,
+            result: user,
+          });
+        } else {
+          console.log("Invalid password");
+          res.status(401).json({
+            msg: "Invalid email address or password.",
+          });
+        }
+      });
     });
   }
+  
   updateUser(req, res) {
     const data = req.body;
     if (data.userPass) {
