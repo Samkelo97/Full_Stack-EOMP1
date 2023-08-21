@@ -1,6 +1,7 @@
 const db = require("../config"); //this imprt the db con from config
 const { hash, compare, hashSync } = require("bcrypt");
 const { createToken } = require("../middleware/authentication");
+
 class Users {
     fetchUsers(req, res) {
         const query = `
@@ -16,6 +17,7 @@ class Users {
           });
         });
       }
+      
   fetchUser(req, res) {
     const query = `
         SELECT userID, firstName, lastNmae,userAge, gender,userRole,
@@ -25,6 +27,7 @@ class Users {
         `;
     db.query(query, (err, result) => {
       if (err) throw err;
+
       res.json({
         status: res.statusCode,
         result,
@@ -32,85 +35,73 @@ class Users {
     });
   }
   async register(req, res) {
-    try {
-      const data = req.body;
-      // Encrypt password
-      data.userPass = await hash(data.userPass, 15);
-      // PAYLOAD means DATA THAT COMES FROM THE USER
-      const user = {
-        emailAdd: data.emailAdd,
-        userPass: data.userPass,
-      };
-      // Query
-      const query = `
-        INSERT INTO Users
-        SET ?;
+    const data = req.body;
+    //encrypt password
+    data.userPass = await hash(data.userPass, 15);
+    
+    const user = {
+      emailAdd: data.emailAdd,
+      userPass
+      : data.userPass,
+    };
+    //query
+    const query = `
+      INSERT INTO Users
+      SET ?; 
       `;
-      await db.query(query, [data]);
-      // Create a token
-      const token = createToken(user);
-      res.status(200).json({
+    db.query(query, [data], (err) => {
+      if (err) throw err;
+      //create a token
+      let token = createToken(user);
+      res.json({
+        status: res.statusCode,
         msg: "You are now registered.",
-        token,
       });
-    } catch (error) {
-      console.error("Error during registration:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
+    });
   }
   login(req, res) {
     const { emailAdd, userPass } = req.body;
+  
     const query = `
       SELECT userID, firstName, lastName, userAge, gender, userRole,
       emailAdd, profileUrl, userPass
       FROM Users
       WHERE emailAdd = ?;
     `;
+  
     db.query(query, [emailAdd], async (err, result) => {
-      if (err) {
-        console.error("Database error during login:", err);
-        res.status(500).json({ error: "Internal server error" });
-        return;
-      }
-  
+      if (err) throw err;
       if (!result?.length) {
-        console.log("User not found with email:", emailAdd);
-        res.status(401).json({
-          msg: "Invalid email address or password.",
+        res.json({
+          status: res.statusCode,
+          msg: "You provided a wrong email.",
         });
-        return;
-      }
-  
-      const user = result[0];
-  
-      await compare(userPass, user.userPass, (cErr, cResult) => {
-        if (cErr) {
-          console.error("Error comparing passwords:", cErr);
-          res.status(500).json({ error: "Internal server error" });
-          return;
-        }
-  
-        if (cResult) {
+      } else {
+        await compare(userPass, result[0].userPass, (cErr, cResult) => {
+          if (cErr) throw cErr;
+          // Create a token
           const token = createToken({
             emailAdd,
             userPass,
           });
-          res.status(200).json({
-            msg: "Logged in",
-            token,
-            result: user,
-          });
-        } else {
-          console.log("Invalid password");
-          res.status(401).json({
-            msg: "Invalid email address or password.",
-          });
-        }
-      });
+          if (cResult) {
+            res.json({
+              msg: "Logged in",
+              token,
+              result: result[0],
+            });
+          } else {
+            res.json({
+              status: res.statusCode,
+              msg: "Invalid password or you have not registered",
+            });
+          }
+        });
+      }
     });
   }
   
-  
+
   updateUser(req, res) {
     const data = req.body;
     if (data.userPass) {
@@ -129,6 +120,7 @@ class Users {
       });
     });
   }
+  
   deleteUser(req, res) {
     const query = `DELETE FROM Users
         WHERE userID = ?`;
@@ -139,8 +131,6 @@ class Users {
         msg: "A user record was deleted.",
       });
     });
-  }
+  }  
 }
 module.exports = Users;
-
-
