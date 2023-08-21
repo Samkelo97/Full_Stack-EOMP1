@@ -32,28 +32,31 @@ class Users {
     });
   }
   async register(req, res) {
-    const data = req.body;
-    //encrypt password
-    data.userPass = await hash(data.userPass, 15);
-    //PAYLOAD means DATA THAT COMES FROM THE USER
-    const user = {
-      emailAdd: data.emailAdd,
-      userPass: data.userPass,
-    };
-    //query
-    const query = `
-      INSERT INTO Users
-      SET ?;
+    try {
+      const data = req.body;
+      // Encrypt password
+      data.userPass = await hash(data.userPass, 15);
+      // PAYLOAD means DATA THAT COMES FROM THE USER
+      const user = {
+        emailAdd: data.emailAdd,
+        userPass: data.userPass,
+      };
+      // Query
+      const query = `
+        INSERT INTO Users
+        SET ?;
       `;
-    db.query(query, [data], (err) => {
-      if (err) throw err;
-      //create a token
-      let token = createToken(user);
-      res.json({
-        status: res.statusCode,
+      await db.query(query, [data]);
+      // Create a token
+      const token = createToken(user);
+      res.status(200).json({
         msg: "You are now registered.",
+        token,
       });
-    });
+    } catch (error) {
+      console.error("Error during registration:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
   login(req, res) {
     const { emailAdd, userPass } = req.body;
@@ -125,3 +128,5 @@ class Users {
   }
 }
 module.exports = Users;
+
+
