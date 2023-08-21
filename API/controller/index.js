@@ -30,8 +30,7 @@ routes.post('/login',
 bodyParser.json(), (req, res)=>{
     users.login(req, res)
 })
-//Book's router
-// routes.get(/book)
+
 module.exports = {
     express,
     routes,
