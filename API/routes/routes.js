@@ -1,26 +1,32 @@
-// import express
-import express from "express";
-  
-// import function from controller
-import { showProducts, showProductById, createProduct, updateProduct, deleteProduct } from "../controllers/Product.js";
-  
+const express = require("express");
+const productController = require("../controller/product");
+//User Imports
+const bodyParser = require('body-parser')
+//Import all model's objects
+
 // init express router
 const router = express.Router();
-  
+const {
+  showProducts,
+  showProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} = productController;
 // Get All Product
-router.get('/Products', showProducts);
-  
+router.get("/products", showProducts);
 // Get Single Product
-router.get('/Products/:id', showProductById);
-  
+router.get("/products/:id", showProductById);
 // Create New Product
-router.post('/Products', createProduct);
-  
+router.post("/productsAdd", createProduct);
 // Update Product
-router.put('/Products/:id', updateProduct);
-  
+router.put("/products/:id", updateProduct);
 // Delete Product
-router.delete('/Products/:id', deleteProduct);
-  
-// export default router
-export default router;
+router.delete("/products/:id", deleteProduct);
+
+
+
+
+
+
+
