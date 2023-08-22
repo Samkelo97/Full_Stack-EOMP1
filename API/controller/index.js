@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const {verifyAToken} = require('../middleware/authentication')
 const routes = express.Router()
 //Import all model's objects
-const {users} = require('../model')
+const {users, products} = require('../model')
 //User's router
 routes.get('/users', (req, res)=>{
     users.fetchUsers(req, res)
@@ -40,7 +40,7 @@ routes.get('/products/:id', (req, res) => {
     products.getProduct(req, res)
 })
 // Add a product route
-routes.post('/add-product', bodyParser.json(), (req, res) => {
+routes.post('/add-products', bodyParser.json(), (req, res) => {
     products.addProduct(req, res)
 })
 // Update a single route route
