@@ -1,6 +1,6 @@
-import { query as _query } from "../config"; //this imprt the db con from config
-import { hash, compare, hashSync } from "bcrypt";
-import { createToken } from "../middleware/authentication";
+const db = require("../config"); //this imprt the db con from config
+const { hash, compare, hashSync } = require("bcrypt");
+const { createToken } = require("../middleware/authentication");
 
 class Users {
     fetchUsers(req, res) {
@@ -9,7 +9,7 @@ class Users {
             emailAdd, userPass, userProfile
             FROM Users;
         `;
-        _query(query, (err, results) => {
+        db.query(query, (err, results) => {
           if (err) throw err;
           res.json({
             status: res.statusCode, // Corrected typo here
@@ -25,7 +25,7 @@ class Users {
         FROM Users
         WHERE userId = ${req.params.id};
         `;
-    _query(query, (err, result) => {
+    db.query(query, (err, result) => {
       if (err) throw err;
 
       res.json({
@@ -49,7 +49,7 @@ class Users {
       INSERT INTO Users
       SET ?; 
       `;
-    _query(query, [data], (err) => {
+    db.query(query, [data], (err) => {
       if (err) throw err;
       //create a token
       let token = createToken(user);
@@ -69,7 +69,7 @@ class Users {
       WHERE emailAdd = ?;
     `;
   
-    _query(query, [emailAdd], async (err, result) => {
+    db.query(query, [emailAdd], async (err, result) => {
       if (err) throw err;
       if (!result?.length) {
         res.json({
@@ -112,7 +112,7 @@ class Users {
         SET ?
         WHERE userID = ?
         `;
-    _query(query, [data, req.params.id], (err) => {
+    db.query(query, [data, req.params.id], (err) => {
       if (err) throw err;
       res.json({
         status: res.statusCode,
@@ -124,7 +124,7 @@ class Users {
   deleteUser(req, res) {
     const query = `DELETE FROM Users
         WHERE userID = ?`;
-    _query(query, [req.params.id], (err) => {
+    db.query(query, [req.params.id], (err) => {
       if (err) throw err;
       res.json({
         status: res.statusCode,
@@ -133,4 +133,4 @@ class Users {
     });
   }  
 }
-export default Users;
+module.exports = Users;
