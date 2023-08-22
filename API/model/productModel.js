@@ -1,28 +1,32 @@
-const db = require("../config/index")
+const connection = require("../config/index");
 // import connection
 // import db from "../config/database.js";
 // Get All Products
 const getProducts = (result) => {
-    db.query("SELECT * FROM Products", (err, results) => {
-        if(err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            result(null, results);
-        }
-    });
-}
+  connection.query("SELECT * FROM Products", (err, results) => {
+    if (err) {
+      console.log(err);
+      result(err, null);
+    } else {
+      result(null, results);
+    }
+  });
+};
 // Get Single Product
 const getProductById = (id, result) => {
-    db.query("SELECT * FROM Products WHERE productID = ?", [id], (err, results) => {
-        if(err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            result(null, results[0]);
-        }
-    });
-}
+  connection.query(
+    "SELECT * FROM Products WHERE productID = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results[0]);
+      }
+    }
+  );
+};
 // Insert Product to Database
 // const insertProduct = (data, result) => {
 //     // const { productName, productPrice, productStock, productUrl, category, id } = data;
@@ -39,50 +43,63 @@ const getProductById = (id, result) => {
 //     });
 // }
 const insertProduct = (data, result) => {
-    const { productName, productPrice, productStock, productUrl, category } = data;
-    const values = [productName, productPrice, productStock, productUrl, category];
-    db.query(
-      "INSERT INTO Products (productName, productPrice, productStock, productUrl, category) VALUES (?, ?, ?, ?, ?)",
-      values,
-      (err, results) => {
-        if (err) {
-          console.log(err);
-          result(err, null);
-        } else {
-          result(null, results);
-        }
+  const { productName, productPrice, productStock, productUrl, category } =
+    data;
+  const values = [
+    productName,
+    productPrice,
+    productStock,
+    productUrl,
+    category,
+  ];
+  connection.query(
+    "INSERT INTO Products (productName, productPrice, productStock, productUrl, category) VALUES (?, ?, ?, ?, ?)",
+    values,
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
       }
-    );
-  };
+    }
+  );
+};
 // Update Product to Database
 const updateProductById = (data, id, result) => {
-    //db.query("UPDATE Products SET product_name = ?, product_price = ? WHERE product_id = ?", [data.product_name, data.product_price, id], (err, results) => {
-        db.query("UPDATE Products SET productName = ?, productPrice = ?, productStock = ?, productUrl = ?, category = ? WHERE productID = ?",
-        [productName, productPrice, productStock, productUrl, category, id],
-        (err, results) => {
-        if(err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            result(null, results);
-        }
-    });
-}
+  //db.query("UPDATE Products SET product_name = ?, product_price = ? WHERE product_id = ?", [data.product_name, data.product_price, id], (err, results) => {
+  connection.query(
+    "UPDATE Products SET productName = ?, productPrice = ?, productStock = ?, productUrl = ?, category = ? WHERE productID = ?",
+    [productName, productPrice, productStock, productUrl, category, id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
 // Delete Product to Database
 const deleteProductById = (id, result) => {
-    db.query("DELETE FROM Products WHERE productID = ?", [id], (err, results) => {
-        if(err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            result(null, results);
-        }
-    });
-}
+  connection.query(
+    "DELETE FROM Products WHERE productID = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, results);
+      }
+    }
+  );
+};
 module.exports = {
-    getProducts,
-    getProductById,
-    insertProduct,
-    updateProductById,
-    deleteProductById
-}
+  getProducts,
+  getProductById,
+  insertProduct,
+  updateProductById,
+  deleteProductById,
+};
