@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   // Handling all errors
   app.use(ErrorHandling);
   // Server
-routes.get('^/$|/Full_Stack-EOMP1',(req, res)=>{
+routes.get('^/$|/Full_Stack-EOMP',(req, res)=>{
     res.sendFile(path.resolve(__dirname,
         "./static/HTML/index.html"))
 })
