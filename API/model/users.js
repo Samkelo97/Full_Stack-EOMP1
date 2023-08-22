@@ -37,18 +37,18 @@ class Users {
   async register(req, res) {
     const data = req.body;
     //encrypt password
-    data.userPass = await hash(data.userPass, 15);
+    data.userPass = await hash(data.userPass, 10);
     
     const user = {
       emailAdd: data.emailAdd,
-      userPass: data.userPass,
+      userPass: data.userPass
     };
     
     //query
     const query = `
       INSERT INTO Users
       SET ?; 
-      `;
+      `
     db.query(query, [data], (err) => {
       if (err) throw err;
       //create a token
@@ -56,8 +56,8 @@ class Users {
       res.json({
         status: res.statusCode,
         msg: "You are now registered.",
-      });
-    });
+      })
+    })
   }
   login(req, res) {
     const { emailAdd, userPass } = req.body;
