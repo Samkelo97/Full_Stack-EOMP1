@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const ErrorHandling = require('./middleware/ErrorHandling')
 const port =+process.env.PORT || 3000
 //static
-app.use(express.static('./static'))
+// app.use(express.static('./static'))
 // Middleware - APplication level
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -34,7 +34,6 @@ routes.get('^/$|/Full_Stack-EOMP1',(req, res)=>{
         "./static/HTML/index.html"))
 })
 //Handling all errors using middleware
-app.use(ErrorHandling)
 app.listen(port, ()=>{
     console.log(`The server is running on port ${port}`);
 })
