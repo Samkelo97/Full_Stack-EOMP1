@@ -31,11 +31,6 @@ bodyParser.json(), (req, res)=>{
     users.login(req, res)
 })
 
-module.exports = {
-    express,
-    routes,
-    verifyAToken
-}
 //products router
 routes.get('/products', (req, res) => {
     products.getProducts(req, res)
