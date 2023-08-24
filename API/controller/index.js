@@ -43,21 +43,7 @@ routes.get('/products/:id', (req, res) => {
 routes.post('/add-products', bodyParser.json(), (req, res) => {
     products.addProduct(req, res)
 })
-// Update a single route route
-routes.put('/products/:id', bodyParser.json(), (req, res) => {
-    products.updateProduct(req, res)
-})
-routes.get('/products', (req, res) => {
-    products.getProducts(req, res)
-})
-// Get a single product route
-routes.get('/products/:id', (req, res) => {
-    products.getProduct(req, res)
-})
-// Add a product route
-routes.post('/add-product', bodyParser.json(), (req, res) => {
-    products.addProduct(req, res)
-})
+
 // Update a single route route
 routes.put('/products/:id', bodyParser.json(), (req, res) => {
     products.updateProduct(req, res)
@@ -70,9 +56,7 @@ routes.delete('/products/:id', (req, res) => {
     products.deleteProduct(req, res)
 })
 // Delete a product route
-routes.delete('/products/:id', (req, res) => {
-    products.deleteProduct(req, res)
-})
+
 module.exports = {
     express,
     routes,
