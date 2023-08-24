@@ -45,7 +45,7 @@ routes.post('/add-products', bodyParser.json(), (req, res) => {
 })
 
 // Update a single route route
-routes.patch('/update/:id', bodyParser.json(), (req, res) => {
+routes.patch('/products/:id', bodyParser.json(), (req, res) => {
     products.updateProduct(req, res)
 
 routes.put('/products/:id', bodyParser.json(), (req, res) => {
