@@ -15,6 +15,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Request-Methods", "*");
     res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Expose-Headers", "Authorization");
+    res.header("Access-Control-Expose-Headers", "http://localhost:8080");
     next();
   });
   app.use(
