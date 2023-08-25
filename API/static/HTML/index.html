@@ -3,9 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/style.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>hskjsafhjoa</h1>
+    <div class="heading">
+        <h2>Router description</h2>
+    </div>
+    <div class="container">
+        <table>
+            <thead>
+                <th>HTTP Methods</th>
+                <th>Path</th>
+                <th>Description</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/ (Home page)</td>
+                    <td>Directs you to the home/landing page</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/users</td>
+                    <td>Retrieves all the users</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/user/:id</td>
+                    <td>Retrieves a single user by id</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/user</td>
+                    <td>Registers a user</td>
+                </tr>
+                <tr>
+                    <td>PATCH/PUT</td>
+                    <td>/user/:id</td>
+                    <td>Updates a single user by id</td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>/user/:id</td>
+                    <td>Removes a single user by id</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/products</td>
+                    <td>Retrieves all the products</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/product/:id</td>
+                    <td>Retrieves a single product by id</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/product</td>
+                    <td>Adds/creates a new product</td>
+                </tr>
+                <tr>
+                    <td>PUT/PATCH</td>
+                    <td>/product/:id</td>
+                    <td>Updates a product</td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>/product/:id</td>
+                    <td>Removes a product</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+
+
+
+
+
+

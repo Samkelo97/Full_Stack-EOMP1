@@ -42,13 +42,13 @@ const {
   const updateProduct = (req, res) => {
     const data = req.body;
     const id = req.params.id;
-    // updateProductById(data, id, (err, results) => {
-    //   if (err) {
-    //     res.send(err);
-    //   } else {
-    //     res.json(results);
-    //   }
-    // });
+    updateProductById(data, id, (err, results) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(results);
+      }
+    });
 
     const product = {
       prodName: req.body.prodName,
@@ -67,22 +67,22 @@ const {
     });
   };
 
-  // updateProductById(req, res)
-  //   const product = {
-  //     prodName: req.body.prodName,
-  //     quantity: req.body.quantity,
-  //     amount: req.body.amount,
-  //     Category: req.body.Category,
-  //     prodUrl: req.body.prodUrl,
-  //   };
-  //   const query = `UPDATE products SET ? WHERE prodID = ${req.params.id}`;
-  //   db.query(query, product, (err) => {
-  //     if (err) throw err;
-  //     res.json({
-  //       status: res.statusCode,
-  //       msg: 'The product record was updated.',
-  //     });
-  //   });
+  updateProductById(req, res)
+    const product = {
+      prodName: req.body.prodName,
+      quantity: req.body.quantity,
+      amount: req.body.amount,
+      Category: req.body.Category,
+      prodUrl: req.body.prodUrl,
+    };
+    const query = `UPDATE products SET ? WHERE prodID = ${req.params.id}`;
+    db.query(query, product, (err) => {
+      if (err) throw err;
+      res.json({
+        status: res.statusCode,
+        msg: 'The product record was updated.',
+      });
+    });
   
 
 
